@@ -1,3 +1,4 @@
+from datetime import datetime
 import logging
 import logging.config
 import os
@@ -53,6 +54,14 @@ def main():
         # Try to read file again.
         logging.config.fileConfig(logging_config)
     logger = logging.getLogger('example')
+
+    # Create file handler for logging to file.
+    file_handler = logging.FileHandler(
+        '{:%Y-%m-%d}.log'.format(datetime.today()))
+    # Get formatter obtained by config file.
+    formatter = logging.root.handlers[0].formatter
+    file_handler.setFormatter(formatter)
+    logger.addHandler(file_handler)
 
     logger.debug('debug message')
     logger.info('info message')
