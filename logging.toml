@@ -1,8 +1,8 @@
 [loggers]
-keys = root,simpleLogger,subLogger
+keys = root,simpleLogger
 
 [handlers]
-keys = consoleHandler
+keys = consoleHandler,mainFileHandler,detectionFileHandler
 
 [formatters]
 keys = simpleFormatter
@@ -13,14 +13,8 @@ handlers = consoleHandler
 
 [logger_simpleLogger]
 level = INFO
-handlers = consoleHandler
+handlers = consoleHandler,mainFileHandler
 qualname = simpleLogger
-propagate = 0
-
-[logger_subLogger]
-level = INFO
-handlers = consoleHandler
-qualname = subLogger
 propagate = 0
 
 [handler_consoleHandler]
@@ -29,5 +23,18 @@ level = INFO
 formatter = simpleFormatter
 args = (sys.stdout,)
 
+[handler_mainFileHandler]
+class = handlers.TimedRotatingFileHandler
+level = INFO
+formatter = simpleFormatter
+args = ("logs/main_log.log","S",5)
+
+[handler_detectionFileHandler]
+class = handlers.TimedRotatingFileHandler
+level = INFO
+formatter = simpleFormatter
+args = ("logs/detection_log.log","midnight")
+
 [formatter_simpleFormatter]
 format = [%(asctime)s] %(levelname)s - %(message)s
+datefmt = %Y/%m/%d %H:%M:%S
